@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Client (React + Vite)",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["E:\\RameTech Consultancy jobs\\Food website\\client\\node_modules\\vite\\bin\\vite.js", "E:\\RameTech Consultancy jobs\\Food website\\client", "--port", "5173"],
+      "port": 5173
+    },
+    {
+      "name": "Server (Node.js + Express)",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["E:\\RameTech Consultancy jobs\\Food website\\server\\node_modules\\nodemon\\bin\\nodemon.js", "E:\\RameTech Consultancy jobs\\Food website\\server\\server.js"],
+      "port": 5000
+    }
+  ]
+}
