@@ -12,8 +12,13 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
+      // Only clear token and redirect if user was logged in (had a token)
+      // This prevents redirect loops for non-authenticated users browsing the homepage
+      const hadToken = localStorage.getItem('token');
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      if (hadToken && !window.location.pathname.startsWith('/login')) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(err);
   }

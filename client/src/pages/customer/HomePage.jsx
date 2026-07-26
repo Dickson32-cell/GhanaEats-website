@@ -33,13 +33,25 @@ const HomePage = () => {
     Promise.all([
       menuApi.getCategories(),
       featuredApi.getFeaturedItems(),
-      user ? favApi.getFavorites() : Promise.resolve({ data: { data: [] } }),
+      user ? favApi.getFavorites().catch(() => ({ data: { data: [] } })) : Promise.resolve({ data: { data: [] } }),
     ]).then(([cats, featured, favs]) => {
-      setCategories(cats.data.data);
+      setCategories(cats.data.data || []);
       // Extract menu items from featured items
-      const featuredMenuItems = (featured.data || []).map(item => item.menuItem);
-      setItems(featuredMenuItems.length > 0 ? featuredMenuItems : []);
-      setFavoriteIds(favs.data.data.map((f) => f.menuItemId));
+      const featuredMenuItems = (featured.data || []).map(item => item.menuItem).filter(Boolean);
+      // Fallback: if no featured items, fetch regular menu items
+      if (featuredMenuItems.length > 0) {
+        setItems(featuredMenuItems);
+      } else {
+        import('../../api/menuApi').then(({ default: api }) => {
+          api.get('/items?limit=12').then(res => {
+            setItems(res.data.data.items || []);
+          }).catch(() => setItems([]));
+        });
+      }
+      setFavoriteIds((favs.data.data || []).map((f) => f.menuItemId));
+    }).catch((err) => {
+      console.error('Homepage data fetch error:', err);
+      setItems([]);
     }).finally(() => setLoading(false));
   }, [user]);
 
