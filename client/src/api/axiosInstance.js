@@ -12,17 +12,16 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      // Clear the invalid token — let React Router handle the redirect
-      // via ProtectedRoute/AdminRoute instead of a hard browser redirect
+      // Clear the invalid token — React Router handles redirects via
+      // AdminRoute / ProtectedRoute which pass the current location
+      // to the login page so the user returns after re-authenticating.
+      // NEVER do a hard window.location redirect here — it bypasses
+      // React Router and causes the admin page to lose context.
       const hadToken = localStorage.getItem('token');
       localStorage.removeItem('token');
-      // Only redirect if we're NOT already on login/signup and we had a token
-      // (meaning the session expired, not that we're just browsing unauthenticated)
-      if (hadToken && !window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/signup')) {
-        // Use a soft redirect that preserves the current path for return-after-login
-        const currentPath = window.location.pathname + window.location.search;
-        window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
-      }
+      // No redirect at all — just reject the promise.
+      // AuthContext will set user=null, AdminRoute/ProtectedRoute
+      // will handle the redirect via React Router <Navigate>.
     }
     return Promise.reject(err);
   }
