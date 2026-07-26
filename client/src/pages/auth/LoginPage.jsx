@@ -17,9 +17,14 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(form.email, form.password);
+      const loggedInUser = await login(form.email, form.password);
       toast.success('Welcome back!');
-      navigate(from, { replace: true });
+      // Admins go straight to the admin panel
+      if (loggedInUser?.role === 'ADMIN') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Invalid email or password');
     } finally { setLoading(false); }

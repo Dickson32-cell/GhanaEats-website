@@ -27,6 +27,7 @@ import AdminMenuPage from '../pages/admin/AdminMenuPage';
 import AdminUsersPage from '../pages/admin/AdminUsersPage';
 import AdminFeaturedPage from '../pages/admin/AdminFeaturedPage';
 import AdminPromosPage from '../pages/admin/AdminPromosPage';
+import AdminViewSitePage from '../pages/admin/AdminViewSitePage';
 
 const CustomerLayout = ({ children }) => (
   <div className="min-h-screen flex flex-col">
@@ -55,6 +56,7 @@ const AppRouter = () => (
           <Route path="/admin/users" element={<AdminRoute><AdminLayout><AdminUsersPage /></AdminLayout></AdminRoute>} />
           <Route path="/admin/featured" element={<AdminRoute><AdminLayout><AdminFeaturedPage /></AdminLayout></AdminRoute>} />
           <Route path="/admin/promos" element={<AdminRoute><AdminLayout><AdminPromosPage /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/site" element={<AdminRoute><AdminLayout><AdminViewSitePage /></AdminLayout></AdminRoute>} />
 
           {/* Customer pages */}
           <Route path="/" element={<CustomerLayout><HomePage /></CustomerLayout>} />
