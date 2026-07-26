@@ -21,7 +21,7 @@ const ghanaMenuData = {
           tags: ['Popular', 'Party Favourite'],
           spiceLevel: 2,
           pairsWith: 'Fried chicken, grilled tilapia, coleslaw, shito',
-          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
+          imageUrl: '/uploads/ghana-jollof-rice.jpeg'
         },
         {
           name: 'Waakye',
@@ -30,7 +30,7 @@ const ghanaMenuData = {
           tags: ['Street Classic', 'Best Seller'],
           spiceLevel: 1,
           pairsWith: 'Shito, spaghetti (talia), fried plantain, gari, boiled eggs, wele',
-          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
+          imageUrl: '/uploads/waakye.jpeg'
         },
         {
           name: 'Fried Rice',
@@ -84,7 +84,7 @@ const ghanaMenuData = {
           tags: ['Must Try', 'Weekend Special'],
           spiceLevel: 3,
           proteinOptions: 'Goat, chicken, assorted meat, snail',
-          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
+          imageUrl: '/uploads/fufu-light-soup.jpeg'
         },
         {
           name: 'Fufu & Groundnut Soup (Nkate Nkwan)',
@@ -120,7 +120,7 @@ const ghanaMenuData = {
           tags: ['Comfort Food'],
           spiceLevel: 2,
           proteinOptions: 'Smoked fish, crab, assorted meat',
-          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
+          imageUrl: '/uploads/banku-okro-soup.jpeg'
         },
         {
           name: 'Tuo Zaafi (TZ) & Ayoyo Soup',
@@ -269,7 +269,7 @@ const ghanaMenuData = {
           price: 16.00,
           tags: ['Homestyle'],
           spiceLevel: 2,
-          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
+          imageUrl: '/uploads/yam-pottage.jpeg'
         },
         {
           name: 'Okro Stew',
@@ -278,7 +278,7 @@ const ghanaMenuData = {
           tags: ['Fan Favourite'],
           spiceLevel: 2,
           proteinOptions: 'Assorted meat, smoked fish, crab',
-          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
+          imageUrl: '/uploads/okro-stew.jpeg'
         },
         {
           name: 'Groundnut Soup',
@@ -305,7 +305,7 @@ const ghanaMenuData = {
           tags: ['Breakfast Staple'],
           spiceLevel: 1,
           pairsWith: 'Koose, bread, bofrot',
-          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
+          imageUrl: '/uploads/hausa-koko.jpeg'
         },
         {
           name: 'Koko (Corn Porridge)',
@@ -339,7 +339,7 @@ const ghanaMenuData = {
           tags: ['Heavy Breakfast'],
           spiceLevel: 3,
           pairsWith: 'Fresh pepper sauce, sliced onions',
-          imageUrl: 'https://images.unsplash.com/photo-1559737558-2f5f35c450e8?w=600'
+          imageUrl: '/uploads/kenkey-fried-fish.jpeg'
         }
       ]
     },
@@ -421,7 +421,7 @@ const ghanaMenuData = {
           price: 8.00,
           tags: ['Add-on'],
           spiceLevel: 0,
-          imageUrl: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600'
+          imageUrl: '/uploads/extra-grilled-chicken.jpeg'
         },
         {
           name: 'Extra Fried Fish',
@@ -429,7 +429,7 @@ const ghanaMenuData = {
           price: 10.00,
           tags: ['Add-on'],
           spiceLevel: 0,
-          imageUrl: 'https://images.unsplash.com/photo-1559737558-2f5f35c450e8?w=600'
+          imageUrl: '/uploads/extra-fried-fish.jpeg'
         },
         {
           name: 'Extra Goat Meat',
@@ -437,7 +437,7 @@ const ghanaMenuData = {
           price: 12.00,
           tags: ['Add-on'],
           spiceLevel: 0,
-          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
+          imageUrl: '/uploads/extra-goat-meat.jpeg'
         },
         {
           name: 'Wele (Cowhide)',
@@ -461,7 +461,7 @@ const ghanaMenuData = {
           price: 4.00,
           tags: ['Add-on'],
           spiceLevel: 0,
-          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
+          imageUrl: '/uploads/extra-fried-plantain.jpeg'
         }
       ]
     }
