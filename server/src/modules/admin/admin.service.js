@@ -104,7 +104,7 @@ export const updateMenuItem = (id, data) =>
   });
 
 export const deleteMenuItem = (id) =>
-  prisma.menuItem.update({ where: { id }, data: { isAvailable: false } });
+  prisma.menuItem.delete({ where: { id } });
 
 export const getAllUsers = () =>
   prisma.user.findMany({

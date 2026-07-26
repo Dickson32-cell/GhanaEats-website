@@ -34,33 +34,42 @@ model User {
   orders    Order[]
   cart      CartItem[]
   favorites Favorite[]
+  reviews   Review[]
 }
 
 model Category {
-  id        String     @id @default(uuid())
-  name      String     @unique
-  slug      String     @unique
-  imageUrl  String?
-  createdAt DateTime   @default(now())
+  id          String     @id @default(uuid())
+  name        String     @unique
+  slug        String     @unique
+  tagline     String?
+  description String?
+  imageUrl    String?
+  createdAt   DateTime   @default(now())
 
   menuItems MenuItem[]
 }
 
 model MenuItem {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  price       Decimal  @db.Decimal(10, 2)
-  imageUrl    String?
-  isAvailable Boolean  @default(true)
-  categoryId  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(uuid())
+  name           String
+  description    String?
+  price          Decimal  @db.Decimal(10, 2)
+  imageUrl       String?
+  isAvailable    Boolean  @default(true)
+  categoryId     String
+  tags           String[] @default([])
+  spiceLevel     Int?     // 0-3: 0=None, 1=Mild, 2=Medium, 3=Hot
+  pairsWith      String?  // Comma-separated suggestions
+  proteinOptions String?  // Comma-separated protein options
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  category   Category    @relation(fields: [categoryId], references: [id])
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  favorites  Favorite[]
+  category      Category       @relation(fields: [categoryId], references: [id])
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  favorites     Favorite[]
+  featuredItems FeaturedItem[]
+  reviews       Review[]
 }
 
 model CartItem {
@@ -90,6 +99,7 @@ model Order {
   user          User                 @relation(fields: [userId], references: [id])
   items         OrderItem[]
   statusHistory OrderStatusHistory[]
+  reviews       Review[]
 }
 
 model OrderItem {
@@ -123,4 +133,47 @@ model Favorite {
   menuItem MenuItem @relation(fields: [menuItemId], references: [id])
 
   @@unique([userId, menuItemId])
+}
+
+model FeaturedItem {
+  id         String   @id @default(uuid())
+  menuItemId String
+  position   Int      @unique
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@index([position])
+}
+
+model PromoMessage {
+  id        String   @id @default(uuid())
+  message   String
+  isActive  Boolean  @default(true)
+  priority  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, priority])
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String
+  menuItemId String
+  orderId    String
+  rating     Int      // 1-5 stars
+  comment    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, menuItemId, orderId])
+  @@index([menuItemId])
+  @@index([userId])
 }

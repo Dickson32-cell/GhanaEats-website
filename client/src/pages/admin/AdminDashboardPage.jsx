@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import * as adminApi from '../../api/adminApi';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Spinner from '../../components/ui/Spinner';
+import { formatPrice } from '../../utils/currency';
 
 const StatCard = ({ icon, label, value, sub, colorClass }) => (
   <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-6 hover:shadow-card-hover transition-shadow">
@@ -19,7 +20,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className="bg-dark text-white rounded-2xl px-4 py-3 shadow-lg text-sm">
         <p className="font-semibold mb-1">{label}</p>
-        <p className="text-brand-400 font-bold">${payload[0].value.toFixed(2)}</p>
+        <p className="text-brand-400 font-bold">{formatPrice(payload[0].value)}</p>
       </div>
     );
   }
@@ -59,7 +60,7 @@ const AdminDashboardPage = () => {
       {/* Stats grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
         {[
-          { icon: '💰', label: 'Total Revenue', value: `$${parseFloat(stats.totalRevenue).toFixed(2)}`, sub: 'From delivered orders', colorClass: 'bg-emerald-50 text-emerald-500', delay: 0 },
+          { icon: '💰', label: 'Total Revenue', value: formatPrice(stats.totalRevenue), sub: 'From delivered orders', colorClass: 'bg-emerald-50 text-emerald-500', delay: 0 },
           { icon: '📦', label: 'Orders Today', value: stats.ordersToday, sub: 'Since midnight', colorClass: 'bg-blue-50 text-blue-500', delay: 100 },
           { icon: '🔥', label: 'Active Orders', value: stats.activeOrders, sub: 'In progress now', colorClass: 'bg-brand-50 text-brand-500', delay: 200 },
           { icon: '👥', label: 'Customers', value: stats.totalUsers, sub: 'Total registered', colorClass: 'bg-violet-50 text-violet-500', delay: 300 },
@@ -108,8 +109,8 @@ const AdminDashboardPage = () => {
                 tick={{ fontSize: 11, fill: '#9ca3af', fontFamily: 'Plus Jakarta Sans' }}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(v) => `$${v}`}
-                width={48}
+                tickFormatter={(v) => formatPrice(v)}
+                width={60}
               />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f9fafb', radius: 8 }} />
               <Bar dataKey="revenue" fill="#ff5a1f" radius={[6, 6, 0, 0]} />

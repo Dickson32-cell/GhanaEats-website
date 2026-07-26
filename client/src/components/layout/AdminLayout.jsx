@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useDarkMode } from '../../context/DarkModeContext';
 
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: (
@@ -18,6 +19,16 @@ const navItems = [
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
     </svg>
   )},
+  { to: '/admin/featured', label: 'Featured', icon: (
+    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+    </svg>
+  )},
+  { to: '/admin/promos', label: 'Promos', icon: (
+    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+    </svg>
+  )},
   { to: '/admin/users', label: 'Users', icon: (
     <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -27,6 +38,7 @@ const navItems = [
 
 const AdminLayout = ({ children }) => {
   const { user, logout } = useAuth();
+  const { isDark, toggleDarkMode } = useDarkMode();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -35,7 +47,7 @@ const AdminLayout = ({ children }) => {
   const isActive = (to, exact) => exact ? location.pathname === to : location.pathname.startsWith(to);
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-gray-50 dark:bg-dark-800 overflow-hidden font-sans">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-dark/50 backdrop-blur-sm z-20 lg:hidden" onClick={() => setSidebarOpen(false)} />
@@ -82,6 +94,23 @@ const AdminLayout = ({ children }) => {
 
         {/* User / actions */}
         <div className="p-4 border-t border-white/10 space-y-1">
+          <button onClick={toggleDarkMode} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/50 hover:text-white hover:bg-white/8 transition-all" title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+            {isDark ? (
+              <>
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                Light Mode
+              </>
+            ) : (
+              <>
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+                Dark Mode
+              </>
+            )}
+          </button>
           <Link to="/" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/50 hover:text-white hover:bg-white/8 transition-all">
             <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -110,13 +139,13 @@ const AdminLayout = ({ children }) => {
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         {/* Mobile topbar */}
-        <header className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 lg:hidden shadow-sm">
-          <button onClick={() => setSidebarOpen(true)} className="text-dark/50 hover:text-dark">
+        <header className="bg-white dark:bg-dark dark:border-white/10 border-b border-gray-100 px-4 py-3 flex items-center gap-3 lg:hidden shadow-sm">
+          <button onClick={() => setSidebarOpen(true)} className="text-dark/50 dark:text-white/50 hover:text-dark dark:hover:text-white">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="font-display font-bold text-dark">Admin</span>
+          <span className="font-display font-bold text-dark dark:text-white">Admin</span>
         </header>
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">{children}</main>

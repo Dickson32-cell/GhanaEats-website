@@ -17,7 +17,7 @@ const Button = ({ children, variant = 'primary', size = 'md', className = '', di
   <button
     {...props}
     disabled={disabled || loading}
-    className={`inline-flex items-center justify-center gap-2 rounded-2xl font-semibold tracking-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+    className={`inline-flex items-center justify-center gap-2 rounded-2xl font-semibold tracking-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed btn-stitched ${variants[variant]} ${sizes[size]} ${className}`}
   >
     {loading && (
       <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

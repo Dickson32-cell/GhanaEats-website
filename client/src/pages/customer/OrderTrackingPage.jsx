@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import * as orderApi from '../../api/orderApi';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
+import { formatPrice } from '../../utils/currency';
 
 const STEPS = ['PENDING', 'PREPARING', 'ON_THE_WAY', 'DELIVERED'];
 const STEP_LABELS = { PENDING: 'Order Placed', PREPARING: 'Preparing', ON_THE_WAY: 'On the Way', DELIVERED: 'Delivered' };
@@ -33,13 +34,29 @@ const OrderTrackingPage = () => {
     }
   }, [order?.status]);
 
-  if (loading) return <div className="flex justify-center py-16"><Spinner /></div>;
-  if (!order) return <div className="text-center py-16 text-gray-500">Order not found.</div>;
+  if (loading) return (
+    <div className="min-h-screen flex justify-center py-16" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
+      <Spinner />
+    </div>
+  );
+
+  if (!order) return (
+    <div className="min-h-screen text-center py-16 text-gray-500" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
+      Order not found.
+    </div>
+  );
 
   const currentStep = STEPS.indexOf(order.status);
   const isCancelled = order.status === 'CANCELLED';
 
   return (
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -86,14 +103,14 @@ const OrderTrackingPage = () => {
             {order.items.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
                 <span className="text-dark/60">{item.menuItem.name} × {item.quantity}</span>
-                <span className="font-medium text-dark">${(parseFloat(item.unitPrice) * item.quantity).toFixed(2)}</span>
+                <span className="font-medium text-dark">{formatPrice(parseFloat(item.unitPrice) * item.quantity)}</span>
               </div>
             ))}
           </div>
           <hr className="my-3 border-gray-100" />
           <div className="flex justify-between font-bold">
             <span className="text-dark">Total</span>
-            <span className="text-brand-500">${parseFloat(order.totalAmount).toFixed(2)}</span>
+            <span className="text-brand-500">{formatPrice(order.totalAmount)}</span>
           </div>
         </div>
       )}
@@ -116,6 +133,7 @@ const OrderTrackingPage = () => {
       <div className="mt-6">
         <Link to="/orders" className="text-brand-500 hover:text-brand-600 text-sm font-semibold transition-colors">← Back to my orders</Link>
       </div>
+    </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import * as adminApi from '../../api/adminApi';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
 import toast from 'react-hot-toast';
+import { formatPrice } from '../../utils/currency';
 
 const STATUSES = ['', 'PENDING', 'PREPARING', 'ON_THE_WAY', 'DELIVERED', 'CANCELLED'];
 const STATUS_LABELS = { '': 'All Orders', PENDING: 'Pending', PREPARING: 'Preparing', ON_THE_WAY: 'On the Way', DELIVERED: 'Delivered', CANCELLED: 'Cancelled' };
@@ -79,7 +80,7 @@ const AdminOrdersPage = () => {
                       <p className="text-xs text-dark/40 mt-0.5">{order.user?.email}</p>
                     </td>
                     <td className="px-5 py-4 text-sm text-dark/60">{order.items?.length || 0} item(s)</td>
-                    <td className="px-5 py-4 font-bold text-brand-500">${parseFloat(order.totalAmount).toFixed(2)}</td>
+                    <td className="px-5 py-4 font-bold text-brand-500">{formatPrice(order.totalAmount)}</td>
                     <td className="px-5 py-4"><Badge status={order.status} /></td>
                     <td className="px-5 py-4 text-sm text-dark/40">{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td className="px-5 py-4">

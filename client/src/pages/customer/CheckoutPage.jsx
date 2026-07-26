@@ -6,6 +6,7 @@ import * as orderApi from '../../api/orderApi';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import toast from 'react-hot-toast';
+import { formatPrice } from '../../utils/currency';
 
 const CheckoutPage = () => {
   const { user } = useAuth();
@@ -30,7 +31,9 @@ const CheckoutPage = () => {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-dark/40">
+      <div className="min-h-screen flex flex-col items-center justify-center text-dark/40" style={{
+        background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+      }}>
         <p className="font-display text-xl font-semibold mb-4">Your cart is empty</p>
         <Button onClick={() => navigate('/menu')}>Browse Menu</Button>
       </div>
@@ -38,6 +41,9 @@ const CheckoutPage = () => {
   }
 
   return (
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="font-display text-3xl font-bold text-dark mb-8">Checkout</h1>
       <div className="grid md:grid-cols-2 gap-8">
@@ -63,19 +69,20 @@ const CheckoutPage = () => {
             {items.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
                 <span className="text-dark/60">{item.menuItem.name} × {item.quantity}</span>
-                <span className="font-medium text-dark">${(parseFloat(item.menuItem.price) * item.quantity).toFixed(2)}</span>
+                <span className="font-medium text-dark">{formatPrice(parseFloat(item.menuItem.price) * item.quantity)}</span>
               </div>
             ))}
           </div>
           <hr className="my-4 border-gray-200" />
-          <div className="flex justify-between text-sm text-dark/60"><span>Subtotal</span><span>${totalPrice.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm text-dark/60 mt-1"><span>Delivery</span><span>$2.99</span></div>
+          <div className="flex justify-between text-sm text-dark/60"><span>Subtotal</span><span>{formatPrice(totalPrice)}</span></div>
+          <div className="flex justify-between text-sm text-dark/60 mt-1"><span>Delivery</span><span>{formatPrice(2.99)}</span></div>
           <div className="flex justify-between font-bold text-lg mt-3 pt-2 border-t border-gray-200">
             <span className="text-dark">Total</span>
-            <span className="text-brand-500">${(totalPrice + 2.99).toFixed(2)}</span>
+            <span className="text-brand-500">{formatPrice(totalPrice + 2.99)}</span>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

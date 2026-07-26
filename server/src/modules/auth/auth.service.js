@@ -50,3 +50,24 @@ export const updateMe = async (userId, data) => {
   });
   return user;
 };
+
+export const changePassword = async (userId, { currentPassword, newPassword }) => {
+  if (!currentPassword || !newPassword) {
+    throw { status: 400, message: 'Current and new passwords are required' };
+  }
+  if (newPassword.length < 6) {
+    throw { status: 400, message: 'New password must be at least 6 characters' };
+  }
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw { status: 404, message: 'User not found' };
+
+  const valid = await comparePassword(currentPassword, user.password);
+  if (!valid) throw { status: 401, message: 'Current password is incorrect' };
+
+  const hashed = await hashPassword(newPassword);
+  await prisma.user.update({
+    where: { id: userId },
+    data: { password: hashed },
+  });
+};

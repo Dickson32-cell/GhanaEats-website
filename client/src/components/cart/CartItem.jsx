@@ -1,4 +1,5 @@
 import { useCart } from '../../context/CartContext';
+import { formatPrice } from '../../utils/currency';
 
 const CartItem = ({ item }) => {
   const { updateQuantity, removeItem } = useCart();
@@ -12,7 +13,7 @@ const CartItem = ({ item }) => {
       />
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-sm text-dark truncate">{item.menuItem.name}</p>
-        <p className="text-brand-500 text-sm font-bold mt-0.5">${parseFloat(item.menuItem.price).toFixed(2)}</p>
+        <p className="text-brand-500 text-sm font-bold mt-0.5">{formatPrice(item.menuItem.price)}</p>
         {/* Quantity controls */}
         <div className="flex items-center gap-2 mt-2">
           <button
@@ -27,7 +28,7 @@ const CartItem = ({ item }) => {
         </div>
       </div>
       <div className="flex flex-col items-end gap-2 flex-shrink-0">
-        <span className="text-sm font-bold text-dark">${(parseFloat(item.menuItem.price) * item.quantity).toFixed(2)}</span>
+        <span className="text-sm font-bold text-dark">{formatPrice(parseFloat(item.menuItem.price) * item.quantity)}</span>
         <button
           onClick={() => removeItem(item.menuItemId)}
           className="text-gray-300 hover:text-red-400 transition-colors"

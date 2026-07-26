@@ -19,9 +19,18 @@ const FavoritesPage = () => {
     if (!isFav) setFavorites((prev) => prev.filter((f) => f.menuItemId !== itemId));
   };
 
-  if (loading) return <div className="flex justify-center py-16"><Spinner /></div>;
+  if (loading) return (
+    <div className="min-h-screen flex justify-center py-16" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
+      <Spinner />
+    </div>
+  );
 
   return (
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, #FFF9F5 0%, #FFF3EB 20%, #FFF8F0 40%, #FFF5F9 60%, #FFF0F5 80%, #FFF5F8 100%)',
+    }}>
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -55,6 +64,7 @@ const FavoritesPage = () => {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 };

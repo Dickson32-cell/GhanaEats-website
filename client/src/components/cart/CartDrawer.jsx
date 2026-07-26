@@ -1,11 +1,24 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import Button from '../ui/Button';
 import CartItem from './CartItem';
+import { formatPrice } from '../../utils/currency';
+import ConfettiCelebration from '../ui/ConfettiCelebration';
 
 const CartDrawer = () => {
   const { items, totalPrice, isCartOpen, closeCart } = useCart();
   const navigate = useNavigate();
+  const [confettiTrigger, setConfettiTrigger] = useState(0);
+  const [prevItemsCount, setPrevItemsCount] = useState(0);
+
+  useEffect(() => {
+    const currentCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    if (currentCount > prevItemsCount && prevItemsCount > 0) {
+      setConfettiTrigger(prev => prev + 1);
+    }
+    setPrevItemsCount(currentCount);
+  }, [items]);
 
   const handleCheckout = () => { closeCart(); navigate('/checkout'); };
 
@@ -68,15 +81,15 @@ const CartDrawer = () => {
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-dark/60">
                 <span>Subtotal</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className="flex justify-between text-sm text-dark/60">
                 <span>Delivery fee</span>
-                <span>$2.99</span>
+                <span>{formatPrice(2.99)}</span>
               </div>
               <div className="flex justify-between font-bold text-base text-dark pt-1 border-t border-gray-200">
                 <span>Total</span>
-                <span className="text-brand-500">${(totalPrice + 2.99).toFixed(2)}</span>
+                <span className="text-brand-500">{formatPrice(totalPrice + 2.99)}</span>
               </div>
             </div>
             <Button className="w-full" size="lg" onClick={handleCheckout}>
@@ -88,6 +101,8 @@ const CartDrawer = () => {
           </div>
         )}
       </div>
+
+      <ConfettiCelebration trigger={confettiTrigger} />
     </>
   );
 };

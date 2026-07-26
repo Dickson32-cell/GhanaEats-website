@@ -28,3 +28,10 @@ export const updateMe = async (req, res, next) => {
     success(res, user, 'Profile updated');
   } catch (err) { next(err); }
 };
+
+export const changePassword = async (req, res, next) => {
+  try {
+    await authService.changePassword(req.user.id, req.body);
+    success(res, null, 'Password changed successfully');
+  } catch (err) { next(err); }
+};
