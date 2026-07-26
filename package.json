@@ -5,11 +5,10 @@
   "description": "Full-Stack Ghanaian Food Ordering Web App — RAMEDIC Consultancy and Creative Ltd",
   "scripts": {
     "build:client": "cd client && npm install && npm run build",
-    "build:server": "cd server && npm install && npx prisma generate && npx prisma db push --accept-data-loss",
+    "build:server": "cd server && npm install && npx prisma generate",
     "build": "npm run build:server && npm run build:client",
     "seed": "cd server && node seed-ghana-menu.js",
-    "postbuild": "npm run seed",
-    "start": "cd server && node server.js",
+    "start": "cd server && npx prisma db push --accept-data-loss && node seed-ghana-menu.js && node server.js",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
     "seed:local": "cd server && node prisma/seed.js"
