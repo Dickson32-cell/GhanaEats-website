@@ -18,15 +18,21 @@ import { errorHandler } from './middleware/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const rootDir = path.join(__dirname, '..', '..');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-app.use(express.json());
+// CORS — allow CLIENT_URL in dev, same-origin in production
+app.use(cors({
+  origin: process.env.CLIENT_URL || true,
+  credentials: true,
+}));
+app.use(express.json({ limit: '10mb' }));
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/cart', cartRoutes);
@@ -37,6 +43,14 @@ app.use('/api/featured', featuredRoutes);
 app.use('/api/promos', promosRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api', uploadRoutes);
+
+// Serve built React frontend (production)
+app.use(express.static(path.join(rootDir, 'client', 'dist')));
+
+// SPA fallback — all non-API routes go to React
+app.get('*', (req, res) => {
+  res.sendFile(path.join(rootDir, 'client', 'dist', 'index.html'));
+});
 
 app.use(errorHandler);
 
