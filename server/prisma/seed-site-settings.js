@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS = [
   // General / Brand
   { key: 'brand_name', value: 'FoodApp', category: 'general' },
   { key: 'brand_tagline', value: 'Delicious food delivered to your door — fresh, fast, and always satisfying.', category: 'general' },
-  { key: 'brand_logo_text', value: 'Ghana Eats', category: 'general' },
+  { key: 'brand_logo_url', value: '', category: 'general' },
   { key: 'signup_button_text', value: 'Get Started', category: 'general' },
   { key: 'signin_button_text', value: 'Sign In', category: 'general' },
   { key: 'logout_button_text', value: 'Logout', category: 'general' },

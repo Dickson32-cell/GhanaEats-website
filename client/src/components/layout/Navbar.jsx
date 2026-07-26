@@ -50,12 +50,18 @@ const Navbar = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-[0_4px_14px_rgba(255,90,31,0.35)] group-hover:shadow-[0_6px_20px_rgba(255,90,31,0.45)] transition-shadow duration-300">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg>
-            </div>
-            <span className="font-display text-xl font-bold text-dark dark:text-white tracking-tight">{getSetting('brand_logo_text')}</span>
+            {getSetting('brand_logo_url') ? (
+              <img src={getSetting('brand_logo_url')} alt={getSetting('brand_name')} className="h-10 w-auto max-h-10 object-contain rounded-xl" />
+            ) : (
+              <>
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-[0_4px_14px_rgba(255,90,31,0.35)] group-hover:shadow-[0_6px_20px_rgba(255,90,31,0.45)] transition-shadow duration-300">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                </div>
+                <span className="font-display text-xl font-bold text-dark dark:text-white tracking-tight">{getSetting('brand_name')}</span>
+              </>
+            )}
           </Link>
 
           {/* Desktop Nav */}

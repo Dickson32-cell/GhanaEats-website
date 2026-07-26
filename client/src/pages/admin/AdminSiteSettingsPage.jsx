@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as siteSettingsApi from '../../api/siteSettingsApi';
 import { useSiteSettings } from '../../context/SiteSettingsContext';
+import api from '../../api/axiosInstance';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Spinner from '../../components/ui/Spinner';
@@ -17,7 +18,9 @@ const AdminSiteSettingsPage = () => {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
+  const logoInputRef = useRef(null);
 
   const tabs = [
     { id: 'general', label: 'Brand', icon: '🏪' },
@@ -31,7 +34,7 @@ const AdminSiteSettingsPage = () => {
   const fields = {
     general: [
       { key: 'brand_name', label: 'Brand Name', hint: 'Shown in footer & admin sidebar' },
-      { key: 'brand_logo_text', label: 'Logo Text (Navbar)', hint: 'Text shown next to the logo icon' },
+      { key: 'brand_logo_url', label: 'Logo Image', hint: 'Upload a logo image (PNG, JPG, SVG). Shown in navbar instead of text.', isLogo: true },
       { key: 'brand_tagline', label: 'Tagline', hint: 'Short description under the logo in footer', textarea: true },
       { key: 'signin_button_text', label: 'Sign In Button Text' },
       { key: 'signup_button_text', label: 'Sign Up Button Text' },
@@ -100,6 +103,40 @@ const AdminSiteSettingsPage = () => {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingLogo(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      if (res.data?.success) {
+        const logoUrl = res.data.imageUrl;
+        setSettings((prev) => ({ ...prev, brand_logo_url: logoUrl }));
+        // Save immediately so it persists
+        await siteSettingsApi.updateSettings({ brand_logo_url: logoUrl });
+        refresh();
+        toast.success('Logo uploaded — live site updated');
+      } else {
+        toast.error(res.data?.message || 'Upload failed');
+      }
+    } catch (err) {
+      toast.error('Failed to upload logo');
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
+  const handleRemoveLogo = async () => {
+    setSettings((prev) => ({ ...prev, brand_logo_url: '' }));
+    await siteSettingsApi.updateSettings({ brand_logo_url: '' });
+    refresh();
+    toast.success('Logo removed — reverted to text');
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -163,8 +200,56 @@ const AdminSiteSettingsPage = () => {
       <div className="bg-white dark:bg-dark-700 rounded-3xl border border-gray-100 dark:border-white/10 shadow-card p-6 lg:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {fields[activeTab].map((field) => (
-            <div key={field.key} className={field.textarea ? 'md:col-span-2' : ''}>
-              {field.textarea ? (
+            <div key={field.key} className={field.textarea || field.isLogo ? 'md:col-span-2' : ''}>
+              {field.isLogo ? (
+                <div className="flex flex-col gap-3">
+                  <label className="text-sm font-semibold text-dark dark:text-white/80">{field.label}</label>
+                  <div className="flex items-center gap-6">
+                    {/* Preview */}
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-dark-600 overflow-hidden flex-shrink-0">
+                      {settings[field.key] ? (
+                        <img src={settings[field.key]} alt="Logo preview" className="h-full w-full object-contain p-1" />
+                      ) : (
+                        <svg className="h-8 w-8 text-gray-300 dark:text-white/20" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </div>
+                    {/* Upload controls */}
+                    <div className="flex flex-col gap-2">
+                      <input
+                        ref={logoInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        loading={uploadingLogo}
+                        onClick={() => logoInputRef.current?.click()}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        {settings[field.key] ? 'Replace Logo' : 'Upload Logo'}
+                      </Button>
+                      {settings[field.key] && (
+                        <button
+                          type="button"
+                          onClick={handleRemoveLogo}
+                          className="text-sm font-semibold text-red-400 hover:text-red-500 transition-colors"
+                        >
+                          Remove Logo
+                        </button>
+                      )}
+                      <p className="text-xs text-gray-400 dark:text-white/30">{field.hint}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : field.textarea ? (
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-semibold text-dark dark:text-white/80">{field.label}</label>
                   <textarea
