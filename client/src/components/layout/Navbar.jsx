@@ -68,8 +68,8 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             {navLink('/', getSetting('nav_home_label'))}
             {navLink('/menu', getSetting('nav_menu_label'))}
-            {user && navLink('/orders', getSetting('nav_orders_label'))}
-            {user && navLink('/favorites', getSetting('nav_favorites_label'))}
+            {navLink('/orders', getSetting('nav_orders_label'))}
+            {navLink('/favorites', getSetting('nav_favorites_label'))}
             {isAdmin && (
               <Link to="/admin" className="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors">
                 Admin Panel
@@ -165,7 +165,7 @@ const Navbar = () => {
         {/* Mobile menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="border-t border-gray-100 dark:border-white/10 py-4 space-y-1">
-            {[[ '/', getSetting('nav_home_label')], ['/menu', getSetting('nav_menu_label')], ...(user ? [['/orders', getSetting('nav_orders_label')], ['/favorites', getSetting('nav_favorites_label')]] : [])].map(([to, label]) => (
+            {[[ '/', getSetting('nav_home_label')], ['/menu', getSetting('nav_menu_label')], ['/orders', getSetting('nav_orders_label')], ['/favorites', getSetting('nav_favorites_label')]].map(([to, label]) => (
               <Link key={to} to={to} className="block px-3 py-2.5 text-sm font-semibold text-dark/70 dark:text-white/70 hover:text-dark dark:hover:text-white rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors">
                 {label}
               </Link>

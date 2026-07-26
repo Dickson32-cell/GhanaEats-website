@@ -6,15 +6,15 @@ const Footer = () => {
   const { get: s } = useSiteSettings();
 
   const footerLinks = {
-    [s('footer_explore_title')]: [
-      { to: '/', label: s('footer_explore_home') },
-      { to: '/menu', label: s('footer_explore_menu') },
-      { to: '/orders', label: s('footer_explore_orders') },
-      { to: '/favorites', label: s('footer_explore_favorites') },
+    Explore: [
+      { to: '/', label: 'Home' },
+      { to: '/menu', label: 'Menu' },
+      { to: '/orders', label: 'My Orders' },
+      { to: '/favorites', label: 'Favorites' },
     ],
-    [s('footer_account_title')]: [
-      { to: '/login', label: s('footer_account_signin') },
-      { to: '/signup', label: s('footer_account_signup') },
+    Account: [
+      { to: '/login', label: 'Sign In' },
+      { to: '/signup', label: 'Create Account' },
     ],
     [s('footer_company_title')]: [
       { href: '#', label: s('footer_company_about') },
