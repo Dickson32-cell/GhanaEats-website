@@ -47,8 +47,8 @@ app.use('/api', uploadRoutes);
 // Serve built React frontend (production)
 app.use(express.static(path.join(rootDir, 'client', 'dist')));
 
-// SPA fallback — all non-API routes go to React
-app.get('*', (req, res) => {
+// SPA fallback — all non-API routes go to React (Express 5 syntax)
+app.get('{*splat}', (req, res) => {
   res.sendFile(path.join(rootDir, 'client', 'dist', 'index.html'));
 });
 
