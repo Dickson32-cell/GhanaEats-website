@@ -70,11 +70,6 @@ const Navbar = () => {
             {navLink('/menu', getSetting('nav_menu_label'))}
             {navLink('/orders', getSetting('nav_orders_label'))}
             {navLink('/favorites', getSetting('nav_favorites_label'))}
-            {isAdmin && (
-              <Link to="/admin" className="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors">
-                Admin Panel
-              </Link>
-            )}
           </div>
 
           {/* Right side */}
@@ -170,7 +165,6 @@ const Navbar = () => {
                 {label}
               </Link>
             ))}
-            {isAdmin && <Link to="/admin" className="block px-3 py-2.5 text-sm font-semibold text-violet-600 rounded-xl hover:bg-violet-50 dark:hover:bg-violet-900/20">Admin Panel</Link>}
             <div className="pt-3 flex flex-col gap-2">
               {user ? (
                 <button onClick={handleLogout} className="w-full rounded-2xl border border-gray-200 dark:border-white/20 py-2.5 text-sm font-semibold text-dark/70 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors">{getSetting('logout_button_text')}</button>
