@@ -8,7 +8,7 @@
     "build:server": "cd server && npm install && npx prisma generate",
     "build": "npm run build:server && npm run build:client",
     "seed": "cd server && node seed-ghana-menu.js",
-    "start": "cd server && npx prisma db push --accept-data-loss && node seed-ghana-menu.js && node server.js",
+    "start": "bash start.sh",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
     "seed:local": "cd server && node prisma/seed.js"
