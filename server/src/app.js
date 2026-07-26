@@ -15,6 +15,7 @@ import promosRoutes from './modules/promos/promos.routes.js';
 import reviewsRoutes from './modules/reviews/reviews.routes.js';
 import uploadRoutes from './modules/upload/upload.routes.js';
 import settingsRoutes from './modules/settings/settings.routes.js';
+import { apiLimiter, authLimiter } from './middleware/rateLimit.middleware.js';
 import { errorHandler } from './middleware/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,10 +31,14 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
+// Global rate limiting — protects all API routes
+app.use('/api', apiLimiter);
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // API routes
+app.use('/api/auth', authLimiter); // Stricter limit on login/register
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/cart', cartRoutes);

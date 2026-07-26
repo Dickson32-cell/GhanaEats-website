@@ -3,16 +3,23 @@ import { hashPassword, comparePassword } from '../../utils/hash.utils.js';
 import { signToken } from '../../utils/jwt.utils.js';
 
 export const register = async ({ name, email, password }) => {
+  // Validate and sanitize inputs
   if (!name?.trim()) throw { status: 400, message: 'Name is required' };
+  if (name.trim().length > 100) throw { status: 400, message: 'Name is too long' };
   if (!email?.trim()) throw { status: 400, message: 'Email is required' };
+  // Basic email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) throw { status: 400, message: 'Please provide a valid email address' };
   if (!password || password.length < 6) throw { status: 400, message: 'Password must be at least 6 characters' };
+  if (password.length > 72) throw { status: 400, message: 'Password must be at most 72 characters' };
 
-  const existing = await prisma.user.findUnique({ where: { email } });
+  const normalizedEmail = email.trim().toLowerCase();
+  const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
   if (existing) throw { status: 409, message: 'Email already in use' };
 
   const hashed = await hashPassword(password);
   const user = await prisma.user.create({
-    data: { name, email, password: hashed },
+    data: { name: name.trim(), email: normalizedEmail, password: hashed },
     select: { id: true, name: true, email: true, role: true },
   });
 
@@ -21,7 +28,8 @@ export const register = async ({ name, email, password }) => {
 };
 
 export const login = async ({ email, password }) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const normalizedEmail = email?.trim().toLowerCase();
+  const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
   if (!user) throw { status: 401, message: 'Invalid credentials' };
 
   const valid = await comparePassword(password, user.password);
