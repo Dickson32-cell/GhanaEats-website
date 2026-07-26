@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import { DarkModeProvider } from '../context/DarkModeContext';
+import { SiteSettingsProvider } from '../context/SiteSettingsContext';
 import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
 
@@ -28,6 +29,7 @@ import AdminUsersPage from '../pages/admin/AdminUsersPage';
 import AdminFeaturedPage from '../pages/admin/AdminFeaturedPage';
 import AdminPromosPage from '../pages/admin/AdminPromosPage';
 import AdminViewSitePage from '../pages/admin/AdminViewSitePage';
+import AdminSiteSettingsPage from '../pages/admin/AdminSiteSettingsPage';
 
 const CustomerLayout = ({ children }) => (
   <div className="min-h-screen flex flex-col">
@@ -41,8 +43,9 @@ const CustomerLayout = ({ children }) => (
 const AppRouter = () => (
   <BrowserRouter>
     <DarkModeProvider>
-      <AuthProvider>
-        <CartProvider>
+      <SiteSettingsProvider>
+        <AuthProvider>
+          <CartProvider>
           <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
           <Routes>
           {/* Auth pages (no nav) */}
@@ -57,6 +60,7 @@ const AppRouter = () => (
           <Route path="/admin/featured" element={<AdminRoute><AdminLayout><AdminFeaturedPage /></AdminLayout></AdminRoute>} />
           <Route path="/admin/promos" element={<AdminRoute><AdminLayout><AdminPromosPage /></AdminLayout></AdminRoute>} />
           <Route path="/admin/site" element={<AdminRoute><AdminLayout><AdminViewSitePage /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/settings" element={<AdminRoute><AdminLayout><AdminSiteSettingsPage /></AdminLayout></AdminRoute>} />
 
           {/* Customer pages */}
           <Route path="/" element={<CustomerLayout><HomePage /></CustomerLayout>} />
@@ -69,7 +73,8 @@ const AppRouter = () => (
           </Routes>
         </CartProvider>
       </AuthProvider>
-    </DarkModeProvider>
+    </SiteSettingsProvider>
+  </DarkModeProvider>
   </BrowserRouter>
 );
 

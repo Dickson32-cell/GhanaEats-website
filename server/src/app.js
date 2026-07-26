@@ -14,6 +14,7 @@ import featuredRoutes from './modules/featured/featured.routes.js';
 import promosRoutes from './modules/promos/promos.routes.js';
 import reviewsRoutes from './modules/reviews/reviews.routes.js';
 import uploadRoutes from './modules/upload/upload.routes.js';
+import settingsRoutes from './modules/settings/settings.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -43,6 +44,7 @@ app.use('/api/featured', featuredRoutes);
 app.use('/api/promos', promosRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Serve built React frontend (production)
 app.use(express.static(path.join(rootDir, 'client', 'dist')));

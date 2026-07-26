@@ -177,3 +177,14 @@ model Review {
   @@index([menuItemId])
   @@index([userId])
 }
+
+model SiteSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   @db.Text
+  category  String   @default("general") // general, navbar, footer, contact, social
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
