@@ -313,9 +313,9 @@ const HomePage = () => {
       {/* Decorative Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {/* Floating Blobs */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-pink-300/30 to-peach-300/30 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-br from-peach-400/30 to-orange-300/30 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-20 -right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-pink-300/30 to-peach-300/30 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute top-1/4 -left-20 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-br from-peach-400/30 to-orange-300/30 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
 
         {/* Subtle Pattern Overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -329,8 +329,8 @@ const HomePage = () => {
       ══════════════════════════════════════ */}
       <section className="relative min-h-[88vh] overflow-hidden">
         {/* Enhanced Background Accents */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-peach-200/40 to-pink-200/40 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-200/30 to-peach-200/30 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] bg-gradient-to-br from-peach-200/40 to-pink-200/40 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] bg-gradient-to-tr from-purple-200/30 to-peach-200/30 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
 
         {/* Decorative Shapes */}
         <div className="absolute top-20 left-10 w-16 h-16 border-4 border-peach-300/30 rounded-full animate-pulse"></div>
@@ -385,7 +385,7 @@ const HomePage = () => {
               <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-8">
                 {/* Left - Food Image */}
                 <div className="relative flex-1 reveal delay-100">
-                  <div className="relative w-full max-w-[450px] h-[450px] mx-auto flex items-center justify-center">
+                  <div className="relative w-full max-w-[280px] h-[280px] sm:max-w-[350px] sm:h-[350px] lg:max-w-[450px] lg:h-[450px] mx-auto flex items-center justify-center">
                     <img
                       key={selectedItemIndex}
                       src={selectedItem?.imageUrl || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80'}
@@ -399,7 +399,7 @@ const HomePage = () => {
                 {/* Right - Food Info */}
                 <div className="flex-1 max-w-lg reveal delay-200">
                   <p className="text-sm text-gray-400 uppercase tracking-widest mb-3">Today's Special</p>
-                  <h2 className="text-4xl sm:text-5xl font-bold text-dark mb-3 leading-tight">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark mb-3 leading-tight">
                     {selectedItem?.name?.toUpperCase() || 'DELICIOUS FOOD'}
                   </h2>
                   <p className="text-gray-600 mb-6 leading-relaxed">
@@ -415,8 +415,8 @@ const HomePage = () => {
                   </div>
 
                   {/* Price & CTA */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="text-4xl font-bold text-dark">{formatPrice(selectedItem?.price || 12.99)}</div>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                    <div className="text-3xl sm:text-4xl font-bold text-dark">{formatPrice(selectedItem?.price || 12.99)}</div>
                     <button
                       onClick={handleOrderNow}
                       className="px-8 py-3 bg-dark text-white rounded-full font-semibold hover:bg-gray-800 transition-all shadow-lg btn-stitched"
@@ -426,7 +426,7 @@ const HomePage = () => {
                   </div>
 
                   {/* Quick Info */}
-                  <div className="flex items-center gap-6 text-sm text-gray-500">
+                  <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-500">
                     <div className="flex items-center gap-2">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -498,7 +498,7 @@ const HomePage = () => {
               </div>
 
               {/* Bottom Icon Navigation */}
-              <div className="flex items-center justify-center gap-10 pt-6 border-t border-gray-200 reveal delay-400">
+              <div className="flex items-center justify-center gap-6 sm:gap-10 pt-6 border-t border-gray-200 reveal delay-400">
                 <button
                   onClick={handleFilterClick}
                   className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-dark transition-colors"
