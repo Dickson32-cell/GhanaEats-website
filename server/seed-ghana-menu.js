@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 const ghanaMenuData = {
@@ -8,6 +9,7 @@ const ghanaMenuData = {
       slug: 'rice-dishes',
       tagline: 'Rice done the Ghana way — bold, saucy, and unforgettable.',
       description: 'From party jollof that starts friendly debates to waakye wrapped in banana leaf on the street corner, rice is the canvas and our sauces are the masterpiece. Pick your favourite and load it up.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Ghana Jollof Rice',
@@ -15,7 +17,8 @@ const ghanaMenuData = {
           price: 15.00,
           tags: ['Popular', 'Party Favourite'],
           spiceLevel: 2,
-          pairsWith: 'Fried chicken, grilled tilapia, coleslaw, shito'
+          pairsWith: 'Fried chicken, grilled tilapia, coleslaw, shito',
+          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
         },
         {
           name: 'Waakye',
@@ -23,7 +26,8 @@ const ghanaMenuData = {
           price: 15.00,
           tags: ['Street Classic', 'Best Seller'],
           spiceLevel: 1,
-          pairsWith: 'Shito, spaghetti (talia), fried plantain, gari, boiled eggs, wele'
+          pairsWith: 'Shito, spaghetti (talia), fried plantain, gari, boiled eggs, wele',
+          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
         },
         {
           name: 'Fried Rice',
@@ -31,7 +35,8 @@ const ghanaMenuData = {
           price: 18.00,
           tags: ['Quick Bite'],
           spiceLevel: 1,
-          pairsWith: 'Grilled chicken, fried chicken, spring rolls'
+          pairsWith: 'Grilled chicken, fried chicken, spring rolls',
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Plain Rice & Stew',
@@ -39,7 +44,8 @@ const ghanaMenuData = {
           price: 12.00,
           tags: ['Comfort Food'],
           spiceLevel: 2,
-          pairsWith: 'Beef, chicken, fish, boiled egg'
+          pairsWith: 'Beef, chicken, fish, boiled egg',
+          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
         },
         {
           name: 'Angwamu (Oil Rice)',
@@ -47,7 +53,8 @@ const ghanaMenuData = {
           price: 10.00,
           tags: ['Homestyle'],
           spiceLevel: 1,
-          pairsWith: 'Sardines, boiled eggs, shito, pepper sauce'
+          pairsWith: 'Sardines, boiled eggs, shito, pepper sauce',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Omo Tuo (Rice Balls)',
@@ -55,7 +62,8 @@ const ghanaMenuData = {
           price: 20.00,
           tags: ['Traditional'],
           spiceLevel: 1,
-          pairsWith: 'Groundnut soup, palm nut soup'
+          pairsWith: 'Groundnut soup, palm nut soup',
+          imageUrl: 'https://images.unsplash.com/photo-1635105684003-7d3a1b1e0e6c?w=600'
         }
       ]
     },
@@ -64,6 +72,7 @@ const ghanaMenuData = {
       slug: 'swallows-soups',
       tagline: 'Tear, dip, swallow, repeat. That\'s how we do it.',
       description: 'No spoon needed — just your hands, a bowl of rich soup, and one of our freshly prepared swallows. Whether you\'re team fufu or team banku, we\'ve got you covered with soups that will make you close your eyes and nod.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Fufu & Light Soup',
@@ -71,7 +80,8 @@ const ghanaMenuData = {
           price: 25.00,
           tags: ['Must Try', 'Weekend Special'],
           spiceLevel: 3,
-          proteinOptions: 'Goat, chicken, assorted meat, snail'
+          proteinOptions: 'Goat, chicken, assorted meat, snail',
+          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
         },
         {
           name: 'Fufu & Groundnut Soup (Nkate Nkwan)',
@@ -79,7 +89,8 @@ const ghanaMenuData = {
           price: 25.00,
           tags: ['Fan Favourite'],
           spiceLevel: 2,
-          proteinOptions: 'Chicken, goat, beef'
+          proteinOptions: 'Chicken, goat, beef',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Fufu & Palm Nut Soup',
@@ -87,7 +98,8 @@ const ghanaMenuData = {
           price: 28.00,
           tags: ['Traditional'],
           spiceLevel: 2,
-          proteinOptions: 'Crab, fish, bushmeat, snail'
+          proteinOptions: 'Crab, fish, bushmeat, snail',
+          imageUrl: 'https://images.unsplash.com/photo-1635105684003-7d3a1b1e0e6c?w=600'
         },
         {
           name: 'Banku & Tilapia',
@@ -95,7 +107,8 @@ const ghanaMenuData = {
           price: 30.00,
           tags: ['Best Seller', 'Street Classic'],
           spiceLevel: 3,
-          pairsWith: 'Grilled pepper, shito, sliced onions & tomatoes'
+          pairsWith: 'Grilled pepper, shito, sliced onions & tomatoes',
+          imageUrl: 'https://images.unsplash.com/photo-1559737558-2f5f35c450e8?w=600'
         },
         {
           name: 'Banku & Okro Soup',
@@ -103,7 +116,8 @@ const ghanaMenuData = {
           price: 22.00,
           tags: ['Comfort Food'],
           spiceLevel: 2,
-          proteinOptions: 'Smoked fish, crab, assorted meat'
+          proteinOptions: 'Smoked fish, crab, assorted meat',
+          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
         },
         {
           name: 'Tuo Zaafi (TZ) & Ayoyo Soup',
@@ -111,7 +125,8 @@ const ghanaMenuData = {
           price: 23.00,
           tags: ['Northern Special'],
           spiceLevel: 2,
-          proteinOptions: 'Beef, guinea fowl, dried fish'
+          proteinOptions: 'Beef, guinea fowl, dried fish',
+          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
         },
         {
           name: 'Akple & Fetri Detsi (Okra Soup)',
@@ -119,7 +134,8 @@ const ghanaMenuData = {
           price: 22.00,
           tags: ['Regional Favourite'],
           spiceLevel: 2,
-          proteinOptions: 'Smoked fish, crab, wele'
+          proteinOptions: 'Smoked fish, crab, wele',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Konkonte & Groundnut Soup',
@@ -127,7 +143,8 @@ const ghanaMenuData = {
           price: 20.00,
           tags: ['Homestyle'],
           spiceLevel: 2,
-          proteinOptions: 'Goat, chicken, dried fish'
+          proteinOptions: 'Goat, chicken, dried fish',
+          imageUrl: 'https://images.unsplash.com/photo-1635105684003-7d3a1b1e0e6c?w=600'
         }
       ]
     },
@@ -136,6 +153,7 @@ const ghanaMenuData = {
       slug: 'snacks-sides',
       tagline: 'Small chops, big flavour. Perfect for snacking or stacking your order.',
       description: 'The best part about Ghana food? The sides might steal the whole show. Crunchy kelewele, smoky suya, crispy spring rolls — grab them solo or pile them onto your main. No judgment.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Kelewele',
@@ -143,7 +161,8 @@ const ghanaMenuData = {
           price: 8.00,
           tags: ['Popular', 'Snack King'],
           spiceLevel: 2,
-          pairsWith: 'Jollof, beans, or solo snacking'
+          pairsWith: 'Jollof, beans, or solo snacking',
+          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
         },
         {
           name: 'Fried Plantain (Kaklo)',
@@ -151,7 +170,8 @@ const ghanaMenuData = {
           price: 6.00,
           tags: ['Side Dish'],
           spiceLevel: 0,
-          pairsWith: 'Red red, stews, or on its own'
+          pairsWith: 'Red red, stews, or on its own',
+          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
         },
         {
           name: 'Fried Yam & Pepper Sauce',
@@ -159,7 +179,8 @@ const ghanaMenuData = {
           price: 10.00,
           tags: ['Street Classic'],
           spiceLevel: 3,
-          pairsWith: 'Pepper sauce'
+          pairsWith: 'Pepper sauce',
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Suya (Kyinkyinga)',
@@ -167,14 +188,16 @@ const ghanaMenuData = {
           price: 12.00,
           tags: ['BBQ Favourite'],
           spiceLevel: 2,
-          proteinOptions: 'Beef, chicken, guinea fowl'
+          proteinOptions: 'Beef, chicken, guinea fowl',
+          imageUrl: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600'
         },
         {
           name: 'Spring Rolls',
           description: 'Crispy, golden rolls packed with seasoned vegetables (and meat if you like). Perfect grab-and-go snack.',
           price: 5.00,
           tags: ['Quick Bite'],
-          spiceLevel: 1
+          spiceLevel: 1,
+          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
         },
         {
           name: 'Koose (Bean Fritters)',
@@ -182,21 +205,24 @@ const ghanaMenuData = {
           price: 7.00,
           tags: ['Breakfast', 'Snack'],
           spiceLevel: 2,
-          pairsWith: 'Koko (porridge), bread, or solo'
+          pairsWith: 'Koko (porridge), bread, or solo',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Bofrot (Puff Puff)',
           description: 'Soft, pillowy fried dough balls dusted with sugar. Ghana\'s favourite sweet snack — light, airy, and dangerously easy to finish.',
           price: 5.00,
           tags: ['Sweet Treat'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
         },
         {
           name: 'Boiled Eggs (Add-on)',
           description: 'The universal Ghana food topper. Add boiled eggs to your waakye, red red, or any stew.',
           price: 2.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         }
       ]
     },
@@ -205,6 +231,7 @@ const ghanaMenuData = {
       slug: 'stews-one-pots',
       tagline: 'Where the real flavour lives — slow-cooked, palm oil-rich, and deeply satisfying.',
       description: 'A proper Ghana stew is an event. Hours of cooking, layers of flavour, and the kind of aroma that calls the neighbours over. These stews come with your choice of sides — rice, yam, plantain, or bread.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Red Red (Bean Stew)',
@@ -212,7 +239,8 @@ const ghanaMenuData = {
           price: 12.00,
           tags: ['Comfort Food', 'Vegetarian Friendly'],
           spiceLevel: 2,
-          pairsWith: 'Fried plantain, gari, bread'
+          pairsWith: 'Fried plantain, gari, bread',
+          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
         },
         {
           name: 'Garden Egg Stew',
@@ -220,7 +248,8 @@ const ghanaMenuData = {
           price: 15.00,
           tags: ['Traditional'],
           spiceLevel: 1,
-          pairsWith: 'Boiled yam, boiled plantain, bread'
+          pairsWith: 'Boiled yam, boiled plantain, bread',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Kontomire Stew (Palava Sauce)',
@@ -228,14 +257,16 @@ const ghanaMenuData = {
           price: 14.00,
           tags: ['Healthy Choice'],
           spiceLevel: 2,
-          pairsWith: 'Ampesi (boiled yam/plantain), rice'
+          pairsWith: 'Ampesi (boiled yam/plantain), rice',
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Yam Pottage (Ampesi Stew)',
           description: 'Chunky yams slow-cooked with tomatoes, peppers, onions, smoked fish, and palm oil. Hearty one-pot goodness.',
           price: 16.00,
           tags: ['Homestyle'],
-          spiceLevel: 2
+          spiceLevel: 2,
+          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
         },
         {
           name: 'Okro Stew',
@@ -243,7 +274,8 @@ const ghanaMenuData = {
           price: 15.00,
           tags: ['Fan Favourite'],
           spiceLevel: 2,
-          proteinOptions: 'Assorted meat, smoked fish, crab'
+          proteinOptions: 'Assorted meat, smoked fish, crab',
+          imageUrl: 'https://images.unsplash.com/photo-1633934542430-090599cc3c46?w=600'
         },
         {
           name: 'Groundnut Soup',
@@ -251,7 +283,8 @@ const ghanaMenuData = {
           price: 18.00,
           tags: ['Must Try'],
           spiceLevel: 2,
-          pairsWith: 'Fufu, rice balls, rice'
+          pairsWith: 'Fufu, rice balls, rice',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         }
       ]
     },
@@ -260,6 +293,7 @@ const ghanaMenuData = {
       slug: 'breakfast-porridges',
       tagline: 'Start your morning the Ghana way — warm, filling, and ready to fuel your day.',
       description: 'Forget cereal. Ghana breakfast hits different. A warm bowl of spiced porridge with koose on the side, or hot kenkey with pepper and fish — this is how you start a proper day.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Hausa Koko (Millet Porridge)',
@@ -267,7 +301,8 @@ const ghanaMenuData = {
           price: 6.00,
           tags: ['Breakfast Staple'],
           spiceLevel: 1,
-          pairsWith: 'Koose, bread, bofrot'
+          pairsWith: 'Koose, bread, bofrot',
+          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
         },
         {
           name: 'Koko (Corn Porridge)',
@@ -275,21 +310,24 @@ const ghanaMenuData = {
           price: 5.00,
           tags: ['Breakfast Staple'],
           spiceLevel: 1,
-          pairsWith: 'Koose, bofrot'
+          pairsWith: 'Koose, bofrot',
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Tom Brown (Roasted Corn Porridge)',
           description: 'Nutty, roasted corn and groundnut porridge that\'s thick, filling, and packed with protein. The energy-booster breakfast.',
           price: 7.00,
           tags: ['Healthy Choice'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Tea & Bread (Breakfast Combo)',
           description: 'Hot tea (Lipton or Milo) with buttered bread, omelette, or fried eggs. Quick, classic, no-fuss morning fuel.',
           price: 8.00,
           tags: ['Quick Bite'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
         },
         {
           name: 'Kenkey & Fried Fish (Breakfast Style)',
@@ -297,7 +335,8 @@ const ghanaMenuData = {
           price: 15.00,
           tags: ['Heavy Breakfast'],
           spiceLevel: 3,
-          pairsWith: 'Fresh pepper sauce, sliced onions'
+          pairsWith: 'Fresh pepper sauce, sliced onions',
+          imageUrl: 'https://images.unsplash.com/photo-1559737558-2f5f35c450e8?w=600'
         }
       ]
     },
@@ -306,48 +345,55 @@ const ghanaMenuData = {
       slug: 'drinks',
       tagline: 'Wash it all down with something cold, sweet, or refreshing.',
       description: 'Every great meal deserves a great drink. Cool off with a cold beverage to complete your Ghana food experience.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Coca-Cola',
           description: 'Classic Coke, ice cold.',
           price: 3.00,
           tags: ['Refreshing'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=600'
         },
         {
           name: 'Fanta',
           description: 'Orange Fanta, perfectly chilled.',
           price: 3.00,
           tags: ['Refreshing'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=600'
         },
         {
           name: 'Sprite',
           description: 'Crisp lemon-lime soda.',
           price: 3.00,
           tags: ['Refreshing'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=600'
         },
         {
           name: 'Bottled Water',
           description: 'Pure drinking water.',
           price: 2.00,
           tags: ['Essential'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1560023907-5f339617ea30?w=600'
         },
         {
           name: 'Malta Guinness',
           description: 'Rich, non-alcoholic malt drink.',
           price: 4.00,
           tags: ['Popular'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Alvaro (Non-Alcoholic Wine)',
           description: 'Sweet non-alcoholic wine, Ghana favorite.',
           price: 5.00,
           tags: ['Sweet'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1605195843136-8b7c5c17c15c?w=600'
         }
       ]
     },
@@ -356,55 +402,63 @@ const ghanaMenuData = {
       slug: 'extras-addons',
       tagline: 'Level up your meal with these essential extras.',
       description: 'The finishing touches that take your meal from good to unforgettable.',
+      imageUrl: 'https://images.unsplash.com/photo-1604908554049-29c4d3a5c66d?w=600',
       dishes: [
         {
           name: 'Shito (Hot Pepper Sauce)',
           description: 'Ghana\'s legendary dark chili sauce made with dried fish, prawns, and spices. A little goes a long way.',
           price: 2.00,
           tags: ['Essential Condiment'],
-          spiceLevel: 3
+          spiceLevel: 3,
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Extra Grilled Chicken',
           description: 'Add grilled chicken to any dish.',
           price: 8.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600'
         },
         {
           name: 'Extra Fried Fish',
           description: 'Add fried fish to any dish.',
           price: 10.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1559737558-2f5f35c450e8?w=600'
         },
         {
           name: 'Extra Goat Meat',
           description: 'Add tender goat meat to any dish.',
           price: 12.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1601050690597-cf6b8a91d9bf?w=600'
         },
         {
           name: 'Wele (Cowhide)',
           description: 'Add chewy, flavorful wele to any dish.',
           price: 6.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1604908176991-6c7c5c17c15c?w=600'
         },
         {
           name: 'Gari (Dried Cassava)',
           description: 'Sprinkle some gari on your beans, stew, or waakye. Crunchy texture, classic move.',
           price: 1.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1603133872848-4d4f9b6dc6e8?w=600'
         },
         {
           name: 'Extra Fried Plantain',
           description: 'Because you always want more plantain. Golden, sweet, perfectly fried.',
           price: 4.00,
           tags: ['Add-on'],
-          spiceLevel: 0
+          spiceLevel: 0,
+          imageUrl: 'https://images.unsplash.com/photo-1546069661-7ac2c4e3a13e?w=600'
         }
       ]
     }
@@ -439,7 +493,6 @@ async function main() {
     });
 
     console.log(`   ✅ Category created: ${category.name}`);
-
     // Create menu items for this category
     for (const dish of dishes) {
       const menuItem = await prisma.menuItem.create({
@@ -451,6 +504,19 @@ async function main() {
       });
       console.log(`   ├─ ${menuItem.name} - GH₵${menuItem.price}`);
     }
+  }
+
+  // Seed admin user
+  const adminEmail = 'admin@foodapp.com';
+  const existing = await prisma.user.findUnique({ where: { email: adminEmail } });
+  if (!existing) {
+    const hashed = await bcrypt.hash('Admin@1234', 10);
+    await prisma.user.create({
+      data: { name: 'Admin', email: adminEmail, password: hashed, role: 'ADMIN' },
+    });
+    console.log('\n👤 Admin user created: admin@foodapp.com / Admin@1234');
+  } else {
+    console.log('\n👤 Admin user already exists.');
   }
 
   // Count and display summary

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: food-website
+    name: ghana-eats
     env: node
     plan: free
     buildCommand: npm run build
