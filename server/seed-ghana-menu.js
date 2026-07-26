@@ -522,14 +522,71 @@ async function main() {
     console.log('\n👤 Admin user already exists.');
   }
 
+  // Seed featured items (pick popular dishes for the homepage)
+  console.log('\n⭐ Seeding featured items...');
+  await prisma.featuredItem.deleteMany();
+
+  const popularItems = await prisma.menuItem.findMany({
+    where: {
+      name: {
+        in: [
+          'Ghana Jollof Rice',
+          'Waakye',
+          'Fufu & Light Soup',
+          'Banku & Tilapia',
+          'Kelewele',
+          'Red Red (Bean Stew)',
+          'Okro Stew',
+          'Kenkey & Fried Fish (Breakfast Style)',
+          'Hausa Koko (Millet Porridge)',
+          'Extra Fried Plantain',
+          'Extra Fried Fish',
+          'Extra Grilled Chicken',
+          'Extra Goat Meat',
+          'Yam Pottage (Ampesi Stew)',
+          'Banku & Okro Soup'
+        ]
+      }
+    }
+  });
+
+  for (let i = 0; i < popularItems.length; i++) {
+    await prisma.featuredItem.create({
+      data: {
+        menuItemId: popularItems[i].id,
+        position: i + 1,
+        isActive: true
+      }
+    });
+  }
+  console.log(`   ✅ Featured ${popularItems.length} items for homepage`);
+
+  // Seed promo messages
+  console.log('\n📢 Seeding promo messages...');
+  await prisma.promoMessage.deleteMany();
+
+  const promos = [
+    { message: 'Sunday Special: Free delivery on orders above GH₵50', isActive: true, priority: 1 },
+    { message: 'New: Try our authentic Fufu & Light Soup — weekend special!', isActive: true, priority: 2 },
+    { message: 'Order Banku & Tilapia and get a free drink', isActive: true, priority: 3 },
+    { message: 'Kelewele — the perfect snack, now available for delivery', isActive: true, priority: 4 },
+  ];
+
+  for (const promo of promos) {
+    await prisma.promoMessage.create({ data: promo });
+  }
+  console.log(`   ✅ ${promos.length} promo messages seeded`);
+
   // Count and display summary
   const categoryCount = await prisma.category.count();
   const menuItemCount = await prisma.menuItem.count();
+  const featuredCount = await prisma.featuredItem.count();
 
   console.log('\n✨ Seeding completed successfully!');
   console.log(`📊 Summary:`);
   console.log(`   Categories: ${categoryCount}`);
   console.log(`   Menu Items: ${menuItemCount}`);
+  console.log(`   Featured Items: ${featuredCount}`);
   console.log('\n🇬🇭 Ghana Eats menu is ready to serve! 🍛');
 }
 
