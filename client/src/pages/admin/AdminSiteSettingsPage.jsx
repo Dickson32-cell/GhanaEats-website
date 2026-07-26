@@ -19,8 +19,10 @@ const AdminSiteSettingsPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
   const logoInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   const tabs = [
     { id: 'general', label: 'Brand', icon: '🏪' },
@@ -35,6 +37,7 @@ const AdminSiteSettingsPage = () => {
     general: [
       { key: 'brand_name', label: 'Brand Name', hint: 'Shown in footer & admin sidebar' },
       { key: 'brand_logo_url', label: 'Logo Image', hint: 'Upload a logo image (PNG, JPG, SVG). Shown in navbar instead of text.', isLogo: true },
+      { key: 'login_bg_url', label: 'Login Background Image', hint: 'Image shown on the left panel of the login page.', isImage: true },
       { key: 'brand_tagline', label: 'Tagline', hint: 'Short description under the logo in footer', textarea: true },
       { key: 'signin_button_text', label: 'Sign In Button Text' },
       { key: 'signup_button_text', label: 'Sign Up Button Text' },
@@ -129,6 +132,39 @@ const AdminSiteSettingsPage = () => {
     toast.success('Logo removed — reverted to text');
   };
 
+  const handleImageUpload = async (e, fieldKey) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      if (res.data?.success) {
+        const imgUrl = res.data.imageUrl;
+        setSettings((prev) => ({ ...prev, [fieldKey]: imgUrl }));
+        await siteSettingsApi.updateSettings({ [fieldKey]: imgUrl });
+        refresh();
+        toast.success('Image uploaded — live site updated');
+      } else {
+        toast.error(res.data?.message || 'Upload failed');
+      }
+    } catch (err) {
+      toast.error('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = async (fieldKey) => {
+    setSettings((prev) => ({ ...prev, [fieldKey]: '' }));
+    await siteSettingsApi.updateSettings({ [fieldKey]: '' });
+    refresh();
+    toast.success('Image removed');
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -192,7 +228,7 @@ const AdminSiteSettingsPage = () => {
       <div className="bg-white dark:bg-dark-700 rounded-3xl border border-gray-100 dark:border-white/10 shadow-card p-6 lg:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {fields[activeTab].map((field) => (
-            <div key={field.key} className={field.textarea || field.isLogo ? 'md:col-span-2' : ''}>
+            <div key={field.key} className={field.textarea || field.isLogo || field.isImage ? 'md:col-span-2' : ''}>
               {field.isLogo ? (
                 <div className="flex flex-col gap-3">
                   <label className="text-sm font-semibold text-dark dark:text-white/80">{field.label}</label>
@@ -235,6 +271,54 @@ const AdminSiteSettingsPage = () => {
                           className="text-sm font-semibold text-red-400 hover:text-red-500 transition-colors"
                         >
                           Remove Logo
+                        </button>
+                      )}
+                      <p className="text-xs text-gray-400 dark:text-white/30">{field.hint}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : field.isImage ? (
+                <div className="flex flex-col gap-3">
+                  <label className="text-sm font-semibold text-dark dark:text-white/80">{field.label}</label>
+                  <div className="flex items-center gap-6">
+                    {/* Preview */}
+                    <div className="flex h-24 w-32 items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-dark-600 overflow-hidden flex-shrink-0">
+                      {settings[field.key] ? (
+                        <img src={settings[field.key]} alt="Preview" className="h-full w-full object-cover" />
+                      ) : (
+                        <svg className="h-8 w-8 text-gray-300 dark:text-white/20" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </div>
+                    {/* Upload controls */}
+                    <div className="flex flex-col gap-2">
+                      <input
+                        ref={imageInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                        onChange={(e) => handleImageUpload(e, field.key)}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        loading={uploadingImage}
+                        onClick={() => imageInputRef.current?.click()}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        {settings[field.key] ? 'Replace Image' : 'Upload Image'}
+                      </Button>
+                      {settings[field.key] && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(field.key)}
+                          className="text-sm font-semibold text-red-400 hover:text-red-500 transition-colors"
+                        >
+                          Remove Image
                         </button>
                       )}
                       <p className="text-xs text-gray-400 dark:text-white/30">{field.hint}</p>

@@ -8,6 +8,7 @@ const DEFAULTS = {
   brand_name: 'FoodApp',
   brand_tagline: 'Delicious food delivered to your door — fresh, fast, and always satisfying.',
   brand_logo_url: '',
+  login_bg_url: '/uploads/waakye.jpeg',
   signup_button_text: 'Get Started',
   signin_button_text: 'Sign In',
   logout_button_text: 'Logout',

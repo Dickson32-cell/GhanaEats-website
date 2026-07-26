@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSiteSettings } from '../../context/SiteSettingsContext';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const { get: getSetting } = useSiteSettings();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
@@ -36,7 +38,7 @@ const LoginPage = () => {
       <div className="hidden lg:flex lg:w-1/2 relative bg-dark flex-col justify-between p-12 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=80')" }}
+          style={{ backgroundImage: `url('${getSetting('login_bg_url')}')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-dark via-dark/95 to-brand-900/40" />
 
