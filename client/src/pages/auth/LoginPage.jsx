@@ -11,7 +11,7 @@ const LoginPage = () => {
   const { get: getSetting } = useSiteSettings();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || (new URLSearchParams(location.search).get('redirect')) || '/';
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
 
@@ -21,11 +21,14 @@ const LoginPage = () => {
     try {
       const loggedInUser = await login(form.email, form.password);
       toast.success('Welcome back!');
-      // Admins go straight to the admin panel
+      // Admins go to the admin panel (or back to the admin page they were on)
       if (loggedInUser?.role === 'ADMIN') {
-        navigate('/admin', { replace: true });
+        const adminFrom = from.startsWith('/admin') ? from : '/admin';
+        navigate(adminFrom, { replace: true });
       } else {
-        navigate(from, { replace: true });
+        // Non-admins should never land on admin routes
+        const safeFrom = from.startsWith('/admin') ? '/' : from;
+        navigate(safeFrom, { replace: true });
       }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Invalid email or password');

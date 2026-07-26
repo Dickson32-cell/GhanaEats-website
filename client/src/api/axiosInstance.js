@@ -12,12 +12,16 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      // Only clear token and redirect if user was logged in (had a token)
-      // This prevents redirect loops for non-authenticated users browsing the homepage
+      // Clear the invalid token — let React Router handle the redirect
+      // via ProtectedRoute/AdminRoute instead of a hard browser redirect
       const hadToken = localStorage.getItem('token');
       localStorage.removeItem('token');
-      if (hadToken && !window.location.pathname.startsWith('/login')) {
-        window.location.href = '/login';
+      // Only redirect if we're NOT already on login/signup and we had a token
+      // (meaning the session expired, not that we're just browsing unauthenticated)
+      if (hadToken && !window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/signup')) {
+        // Use a soft redirect that preserves the current path for return-after-login
+        const currentPath = window.location.pathname + window.location.search;
+        window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
       }
     }
     return Promise.reject(err);
